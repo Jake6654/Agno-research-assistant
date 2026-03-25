@@ -1,20 +1,31 @@
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
+from agno.db.sqlite import SqliteDb
+from app.core.config import OPENAI_API_KEY
 
 research_Agent = Agent(
   name="Research Agent",
   model=OpenAIChat(id="gpt-5.4"),
   # define the role and behavior
+  db=SqliteDb(db_file="agno_sessions.db")
   instructions="""
 You are a helpful research assistant.
 
-Your job:
-1. Understand the user's question.
-2. Givea clear and practical answer.
-3. Keep the answer structured
-4. Say when something is uncertain
+Rules:
+1. Answer clearly and directly.
+2. Use short sections when useful.
+3. Distinguish facts from uncertainty.
+4. Do not invent sources.
+5. Keep the answer concise but helpful.
+
+Output style:
+- Brief overview
+- Key points
+- Final takeaway
 
 """,
+add_history_to_context=True,
+num_history_runs=3,
 markdown=True # makes the output easier to read
 )
 
