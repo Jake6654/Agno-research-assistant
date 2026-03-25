@@ -1,13 +1,13 @@
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.db.sqlite import SqliteDb
-from app.core.config import OPENAI_API_KEY
+from app.core.config import settings
 
 research_Agent = Agent(
   name="Research Agent",
-  model=OpenAIChat(id="gpt-5.4"),
+  model=OpenAIChat(id="gpt-5.4", api_key=settings.OPENAI_API_KEY),
   # define the role and behavior
-  db=SqliteDb(db_file="agno_sessions.db")
+  db=SqliteDb(db_file="agno_sessions.db"),
   instructions="""
 You are a helpful research assistant.
 
