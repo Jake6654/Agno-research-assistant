@@ -7,7 +7,10 @@ router = APIRouter()
 @router.post("/research", response_model=ResearchResponse)
 def run_research(request: ResearchRequest):
   try:
-    response = research_Agent.run(request.question)
+    response = research_Agent.run(
+      request.question,
+      user_id=request.user_id,
+      session_id=request.session_id)
     # response is a object. The agent returns response 
     # needs to get the content by response.content
     return ResearchResponse(response=response.content)
