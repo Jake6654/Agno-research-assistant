@@ -117,9 +117,6 @@ Design notes:
 - Uses a stronger generation model (`gpt-5.4`) for final response quality.
 - Receives structured findings instead of doing retrieval itself.
 - Follows a fixed Markdown response format:
-  - `## 한눈에 보기`
-  - `## 추천 자료`
-  - `## 참고 메모`
 
 Why this split helps:
 - Makes the final answer consistent and easier to scan.
@@ -283,16 +280,8 @@ Examples:
 - `Explain retrieval augmented generation in simple terms.`
 - `Recommend recent technical posts on AI inference orchestration.`
 
-## Known Limitations
-
-- AgentOS and `/research` both depend on model/tool behavior for routing and retrieval quality.
-- The quality of search results depends on model tool use and source availability.
-- There are currently no automated unit or integration tests in the repository.
-- The planner output is assumed to be valid JSON and could be hardened further.
-
 ## Future Improvements
 
 - Add automated tests for planner routing, search result validation, and API responses.
 - Unify the AgentOS path with the pipeline so all entry points support the same search behavior.
-- Add richer source metadata such as publication date and domain.
-- Persist research traces for easier debugging and evaluation.
+- Finding the right AI for each purpose, such as claude for search purpose, and optimizing its performance.
