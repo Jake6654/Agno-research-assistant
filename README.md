@@ -5,7 +5,7 @@ This project is a small research assistant built with FastAPI, Agno, and OpenAI 
 The repository currently contains two execution styles:
 
 1. A pipeline-backed API at `POST /research`
-2. A standalone Agno agent exposed through AgentOS and `playground.py`
+2. A AgentOS operated by research agnet uses the same search pipeline.
 
 The pipeline-backed API is the main path for search-enabled research responses.
 
