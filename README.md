@@ -17,7 +17,7 @@ The app is designed around a clear separation of concerns:
 - A planner agent decides whether a query should go through search first.
 - A search agent uses OpenAI Responses API with the `web_search` tool and returns structured JSON.
 - A writer agent transforms search findings into a clean Korean Markdown answer.
-- A standalone `research_Agent` exists for direct conversational use through Agno AgentOS, but it is separate from the `/research` pipeline.
+- A standalone `research_Agent` exists for direct conversational use through Agno AgentOS and now routes answers through the same research pipeline.
 
 Core files:
 
@@ -57,10 +57,10 @@ Pipeline flow:
 
 The project also defines a standalone Agno agent in [research_agent.py](/Users/jake/Documents/agno-research-assistant/app/agents/research_agent.py) and mounts it through [agent_os.py](/Users/jake/Documents/agno-research-assistant/app/agent_os.py).
 
-This path is useful for experimentation, but it is not the same as the search pipeline. In other words:
+This path is useful for experimentation, and it now uses the same search pipeline. In other words:
 
 - `/research` uses planner -> search -> writer
-- `research_Agent` is a separate direct-answer agent
+- `research_Agent` calls the shared `run_research_pipeline` flow
 
 That distinction matters when testing search behavior.
 
@@ -139,9 +139,9 @@ Design notes:
 - Stores session history in SQLite.
 - Best suited for experimentation and direct conversation.
 
-Important limitation:
-- This agent does not currently use the search pipeline automatically.
-- If you want web-search-backed answers, test through `POST /research`.
+Behavior:
+- This agent now calls the shared planner -> search -> writer pipeline via a tool.
+- You can validate search-backed behavior from either AgentOS or `POST /research`.
 
 ## Data Contracts
 
@@ -266,7 +266,7 @@ python3 playground.py
 
 This exercises the standalone `research_Agent`, not the `/research` pipeline.
 
-Use this when you want to inspect direct Agno agent behavior. Do not use it as the primary validation path for search integration.
+Use this when you want to inspect AgentOS behavior that now follows the same search pipeline.
 
 ## Suggested Manual Test Cases
 
@@ -285,7 +285,7 @@ Examples:
 
 ## Known Limitations
 
-- The standalone `research_Agent` and the `/research` pipeline are separate paths.
+- AgentOS and `/research` both depend on model/tool behavior for routing and retrieval quality.
 - The quality of search results depends on model tool use and source availability.
 - There are currently no automated unit or integration tests in the repository.
 - The planner output is assumed to be valid JSON and could be hardened further.
