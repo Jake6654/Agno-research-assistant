@@ -1,19 +1,17 @@
 from fastapi import APIRouter, HTTPException
 from app.schemas.research import ResearchRequest, ResearchResponse
-from app.agents.research_agent import research_Agent
+from app.services.research_pipeline import run_research_pipeline
 
 router = APIRouter()
 
 @router.post("/research", response_model=ResearchResponse)
-def run_research(request: ResearchRequest):
+def research(request: ResearchRequest):
   try:
-    response = research_Agent.run(
-      request.question,
-      user_id=request.user_id,
-      session_id=request.session_id)
-    # response is a object. The agent returns response 
-    # needs to get the content by response.content
-    return ResearchResponse(response=response.content)
+    answer = run_research_pipeline(
+      question=request.question,
+      session_id=request.session_id
+    )
+    return ResearchResponse(response=answer)
   except Exception as e:
     raise HTTPException(status_code=500, detail=str(e))
   
