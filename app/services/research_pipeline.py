@@ -15,6 +15,7 @@ def run_research_pipeline(question: str, session_id: str | None=None) -> str:
     return writer_result.content
   
   search_result = run_search_agent(question)
+  # ensures the output matched the expected schema
   search_data = SearchOutput.model_validate(search_result)
 
   writer_input = f"""
