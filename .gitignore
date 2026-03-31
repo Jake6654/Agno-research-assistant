@@ -4,3 +4,6 @@ __pycache__/
 *.pyc
 .agno/
 agno_sessions.db
+node_modules/
+.next/
+frontend/.env.local
