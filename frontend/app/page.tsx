@@ -1,89 +1,65 @@
-"use client";
-
-import { FormEvent, useState } from "react";
-
-const apiBaseUrl =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
-
-type ResearchResponse = {
-  response: string;
-};
+import Image from "next/image";
 
 export default function Home() {
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!question.trim()) return;
-
-    setLoading(true);
-    setError("");
-    setAnswer("");
-
-    try {
-      const res = await fetch(`${apiBaseUrl}/research`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          question,
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error(`API request failed with status ${res.status}`);
-      }
-
-      const data = (await res.json()) as ResearchResponse;
-      setAnswer(data.response);
-    } catch (submitError) {
-      setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "Unknown error occurred while requesting research.",
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
-    <main className="page-shell">
-      <section className="hero-card">
-        <p className="hero-kicker">Next.js Frontend</p>
-        <h1>Agno Research Assistant</h1>
-        <p className="hero-copy">
-          질문을 입력하면 FastAPI의 <code>/research</code> 엔드포인트를 호출해
-          리서치 응답을 보여줍니다.
-        </p>
-
-        <form onSubmit={onSubmit} className="research-form">
-          <label htmlFor="question">질문</label>
-          <textarea
-            id="question"
-            value={question}
-            onChange={(event) => setQuestion(event.target.value)}
-            placeholder="예: RAG의 최신 트렌드와 실무 도입 체크리스트를 정리해줘"
-            rows={6}
-          />
-          <button type="submit" disabled={loading}>
-            {loading ? "분석 중..." : "리서치 요청"}
-          </button>
-        </form>
-
-        {error && <p className="error-box">{error}</p>}
-
-        {answer && (
-          <article className="answer-box">
-            <h2>응답</h2>
-            <pre>{answer}</pre>
-          </article>
-        )}
-      </section>
-    </main>
+    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+        <Image
+          className="dark:invert"
+          src="/next.svg"
+          alt="Next.js logo"
+          width={100}
+          height={20}
+          priority
+        />
+        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
+            To get started, edit the page.tsx file.
+          </h1>
+          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+            Looking for a starting point or more instructions? Head over to{" "}
+            <a
+              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+              className="font-medium text-zinc-950 dark:text-zinc-50"
+            >
+              Templates
+            </a>{" "}
+            or the{" "}
+            <a
+              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+              className="font-medium text-zinc-950 dark:text-zinc-50"
+            >
+              Learning
+            </a>{" "}
+            center.
+          </p>
+        </div>
+        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+          <a
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
+            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              className="dark:invert"
+              src="/vercel.svg"
+              alt="Vercel logomark"
+              width={16}
+              height={16}
+            />
+            Deploy Now
+          </a>
+          <a
+            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
+            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Documentation
+          </a>
+        </div>
+      </main>
+    </div>
   );
 }
