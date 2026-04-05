@@ -1,170 +1,26 @@
+@import "tailwindcss";
+
 :root {
-  --bg-a: #f6f1e8;
-  --bg-b: #ead4b5;
-  --panel: rgba(255, 255, 255, 0.8);
-  --ink: #1d1b18;
-  --ink-soft: #5a5249;
-  --accent: #e0562e;
-  --accent-2: #2f7f5f;
-  --border: rgba(29, 27, 24, 0.14);
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
-* {
-  box-sizing: border-box;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 }
 
 body {
-  color: var(--ink);
-  font-family: var(--font-body), "Noto Sans KR", sans-serif;
-  background:
-    radial-gradient(circle at 10% 20%, rgba(224, 86, 46, 0.2), transparent 45%),
-    radial-gradient(circle at 80% 0%, rgba(47, 127, 95, 0.18), transparent 50%),
-    linear-gradient(155deg, var(--bg-a), var(--bg-b));
-}
-
-.page-shell {
-  min-height: 100vh;
-  padding: 32px 18px;
-  display: grid;
-  place-items: center;
-}
-
-.hero-card {
-  width: min(900px, 100%);
-  border-radius: 28px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  box-shadow:
-    0 22px 56px rgba(20, 16, 10, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
-  padding: 28px;
-  backdrop-filter: blur(6px);
-  animation: card-in 500ms ease-out;
-}
-
-.hero-kicker {
-  margin: 0;
-  color: var(--accent-2);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font: 700 0.78rem/1 var(--font-display), "Space Grotesk", sans-serif;
-}
-
-h1 {
-  margin: 10px 0 8px;
-  font: 700 clamp(1.9rem, 4vw, 3rem) / 1.1 var(--font-display), "Space Grotesk",
-    sans-serif;
-}
-
-.hero-copy {
-  margin: 0 0 20px;
-  color: var(--ink-soft);
-  line-height: 1.6;
-}
-
-.research-form {
-  display: grid;
-  gap: 10px;
-}
-
-.research-form label {
-  font-weight: 600;
-}
-
-.research-form textarea {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px;
-  resize: vertical;
-  font: 500 1rem/1.55 var(--font-body), "Noto Sans KR", sans-serif;
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--ink);
-}
-
-.research-form textarea:focus {
-  outline: 2px solid rgba(224, 86, 46, 0.45);
-  border-color: var(--accent);
-}
-
-.research-form button {
-  width: fit-content;
-  border: 0;
-  border-radius: 999px;
-  background: linear-gradient(120deg, var(--accent), #dd8b33);
-  color: white;
-  font: 700 0.96rem/1 var(--font-display), "Space Grotesk", sans-serif;
-  padding: 12px 18px;
-  cursor: pointer;
-  transition: transform 140ms ease, filter 140ms ease;
-}
-
-.research-form button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  filter: saturate(1.08);
-}
-
-.research-form button:disabled {
-  opacity: 0.74;
-  cursor: not-allowed;
-}
-
-.error-box {
-  margin: 18px 0 0;
-  border: 1px solid rgba(184, 36, 22, 0.25);
-  border-radius: 14px;
-  padding: 12px;
-  color: #7b1f14;
-  background: rgba(227, 88, 73, 0.1);
-}
-
-.answer-box {
-  margin-top: 22px;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.78);
-}
-
-.answer-box h2 {
-  margin: 0 0 10px;
-  font: 700 1.05rem/1.2 var(--font-display), "Space Grotesk", sans-serif;
-}
-
-.answer-box pre {
-  margin: 0;
-  white-space: pre-wrap;
-  word-break: break-word;
-  font: 500 0.95rem/1.65 var(--font-body), "Noto Sans KR", sans-serif;
-  color: var(--ink);
-}
-
-@keyframes card-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 640px) {
-  .hero-card {
-    border-radius: 22px;
-    padding: 20px;
-  }
-
-  .research-form button {
-    width: 100%;
-    justify-self: stretch;
-  }
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
