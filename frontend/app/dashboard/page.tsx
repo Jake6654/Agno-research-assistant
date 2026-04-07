@@ -1,24 +1,23 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import ChatLayout from "@/components/chat/chat-layout";
+import ChatShell from "@/components/chat/chat-shell";
 
 export default async function DashboardPage() {
-  const supabase = createClient();
-
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/");
-  }
+  if (!user) redirect("/");
 
-  // Extract name safely
-  const name =
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    user.email?.split("@")[0] ||
-    "User";
-
-  return <ChatLayout user={user} name={name} />;
+  return (
+    <ChatShell
+      user={user}
+      sessions={[
+        { id: "1", title: "Serverless LLM pricing", updatedAt: "2h ago" },
+        { id: "2", title: "Supabase auth callback", updatedAt: "Yesterday" },
+      ]}
+      activeSessionTitle="New Chat"
+    />
+  );
 }
