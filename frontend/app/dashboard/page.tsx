@@ -1,13 +1,23 @@
-export default function DashboardPage() {
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import ChatShell from "@/components/chat/chat-shell";
+
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/");
+
   return (
-    <main className="min-h-screen bg-slate-950 px-6 py-20 text-white">
-      <div className="mx-auto max-w-4xl">
-        <h1 className="text-3xl font-semibold">Welcome</h1>
-        <p className="mt-3 text-slate-300">
-          You are signed in. Now you can start using your personal web search
-          assistant.
-        </p>
-      </div>
-    </main>
+    <ChatShell
+      user={user}
+      sessions={[
+        { id: "1", title: "Serverless LLM pricing", updatedAt: "2h ago" },
+        { id: "2", title: "Supabase auth callback", updatedAt: "Yesterday" },
+      ]}
+      activeSessionTitle="New Chat"
+    />
   );
 }
