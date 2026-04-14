@@ -26,13 +26,19 @@ function useAutoResizeTextarea(minHeight: number, maxHeight = 180) {
   return { textareaRef, adjustHeight };
 }
 
-export default function ChatInput() {
+interface ChatInputProps {
+  onSubmit: (value: string) => Promise<void> | void;
+  disabled?: boolean;
+}
+
+export default function ChatInput({ onSubmit, disabled = false }: ChatInputProps) {
   const [value, setValue] = useState("");
   const { textareaRef, adjustHeight } = useAutoResizeTextarea(56, 180);
 
-  const handleSubmit = () => {
-    if (!value.trim()) return;
-    console.log(value);
+  const handleSubmit = async () => {
+    const nextValue = value.trim();
+    if (!nextValue || disabled) return;
+    await onSubmit(nextValue);
     setValue("");
     requestAnimationFrame(() => adjustHeight());
   };
@@ -47,16 +53,18 @@ export default function ChatInput() {
             setValue(e.target.value);
             adjustHeight();
           }}
-          onKeyDown={(e) => {
+          onKeyDown={async (e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
-              handleSubmit();
+              await handleSubmit();
             }
           }}
           placeholder="Ask something..."
+          disabled={disabled}
           className={cn(
             "max-h-[180px] min-h-[56px] w-full resize-none bg-transparent px-1 py-2 text-[15px] text-[#111111] outline-none",
-            "placeholder:text-[#9aa0a6]"
+            "placeholder:text-[#9aa0a6]",
+            disabled ? "cursor-not-allowed opacity-70" : ""
           )}
         />
 
@@ -66,11 +74,13 @@ export default function ChatInput() {
           </button>
 
           <button
-            onClick={handleSubmit}
-            disabled={!value.trim()}
+            onClick={() => {
+              void handleSubmit();
+            }}
+            disabled={!value.trim() || disabled}
             className={cn(
               "flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition",
-              value.trim()
+              value.trim() && !disabled
                 ? "bg-[#111111] text-white hover:opacity-90"
                 : "bg-[#efefec] text-[#a1a1aa]"
             )}

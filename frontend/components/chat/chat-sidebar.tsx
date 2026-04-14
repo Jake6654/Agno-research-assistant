@@ -3,7 +3,7 @@
 interface SessionItem {
   id: string;
   title: string;
-  updatedAt: string;
+  updatedAtLabel: string;
 }
 
 interface ChatSidebarProps {
@@ -16,9 +16,18 @@ interface ChatSidebarProps {
     };
   };
   sessions: SessionItem[];
+  activeSessionId?: string;
+  onSelectSession: (sessionId: string) => void;
+  onNewChat: () => void;
 }
 
-export default function ChatSidebar({ user, sessions }: ChatSidebarProps) {
+export default function ChatSidebar({
+  user,
+  sessions,
+  activeSessionId,
+  onSelectSession,
+  onNewChat,
+}: ChatSidebarProps) {
   const name =
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
@@ -44,7 +53,10 @@ export default function ChatSidebar({ user, sessions }: ChatSidebarProps) {
       </div>
 
       <div className="px-4 pb-4">
-        <button className="flex w-full items-center justify-center rounded-xl bg-[#111111] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">
+        <button
+          onClick={onNewChat}
+          className="flex w-full items-center justify-center rounded-xl bg-[#111111] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90"
+        >
           + New Chat
         </button>
       </div>
@@ -65,13 +77,16 @@ export default function ChatSidebar({ user, sessions }: ChatSidebarProps) {
             {sessions.map((session) => (
               <button
                 key={session.id}
-                className="flex w-full flex-col items-start rounded-xl px-3 py-3 text-left transition hover:bg-white/80"
+                onClick={() => onSelectSession(session.id)}
+                className={`flex w-full flex-col items-start rounded-xl px-3 py-3 text-left transition hover:bg-white/80 ${
+                  activeSessionId === session.id ? "bg-white" : ""
+                }`}
               >
                 <span className="line-clamp-1 text-sm font-medium text-[#111111]">
                   {session.title}
                 </span>
                 <span className="mt-1 text-xs text-[#8a8f98]">
-                  {session.updatedAt}
+                  {session.updatedAtLabel}
                 </span>
               </button>
             ))}

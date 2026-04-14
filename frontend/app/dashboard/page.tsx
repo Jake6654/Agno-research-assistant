@@ -12,12 +12,15 @@ export default async function DashboardPage() {
 
   return (
     <ChatShell
-      user={user}
-      sessions={[
-        { id: "1", title: "Serverless LLM pricing", updatedAt: "2h ago" },
-        { id: "2", title: "Supabase auth callback", updatedAt: "Yesterday" },
-      ]}
-      activeSessionTitle="New Chat"
+      user={{
+        id: user.id,
+        email: user.email,
+        user_metadata: {
+          full_name: user.user_metadata?.full_name,
+          name: user.user_metadata?.name,
+          avatar_url: user.user_metadata?.avatar_url,
+        },
+      }}
     />
   );
 }
